@@ -1,0 +1,72 @@
+const { createStore, combineReducers ,applyMiddleware} = require("redux");
+ const{logger} =require("redux-logger")
+// state for product and cart
+
+const initialproductstate = {
+  product: ["sugar", "salt"],
+  numberofproduct: 2,
+};
+
+
+// action for product and cart
+
+const getproducts = () => {
+  return {
+    type: "GET_PRODUCT",
+  };
+};
+
+const addproduct = (product) => {
+  return {
+    type: "ADD_PRODUCT",
+    payload: product,
+  };
+};
+
+
+
+//reducer for product and cart
+
+const productReducer = (state = initialproductstate, action) => {
+  switch (action.type) {
+    case "GET_PRODUCT":
+      return {
+        ...state,
+      };
+
+    case "ADD_PRODUCT":
+      return {
+        product: [...state.product, action.payload],
+
+        numberofproduct: state.numberofproduct + 1,
+      };
+
+    default:
+       return state;
+  }
+};
+
+
+
+
+
+
+// store for product and cart
+
+const rootreducer=combineReducers({
+    productR:productReducer,
+    
+})
+
+const store = createStore(rootreducer,applyMiddleware(logger));
+
+store.subscribe(() => {
+    
+    
+    console.log("Product state:", store.getState().productR)
+});
+
+
+
+
+store.dispatch(getproducts())
